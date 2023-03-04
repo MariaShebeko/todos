@@ -1,12 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ITodo } from "../types/data";
+import { ITodo, ITodoList } from "../types/data";
 import { TodoList } from "./TodoList";
 import "./App.css";
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<ITodo[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  console.log("Form render");
+
+  const [todos, setTodos] = useState<ITodoList>({});
+  console.log("todos", todos);
+  // console.log("  Array(todos.values)", Array.from(todos.values));
+
+  // const [title, setTitle] = useState<string>("");
+  // const [description, setDescription] = useState<string>("");
   const [error, setError] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -15,49 +20,40 @@ const App: React.FC = () => {
     if (titleRef.current) titleRef.current.focus();
   }, []);
 
-  const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setError(false);
-    setTitle(event.target.value);
-  };
-
-  const onDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value);
-  };
-
   const onFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    console.log("event", event);
 
     // check if the value is empty
-    if (title.trim().length === 0) {
-      setError(true);
-      return;
-    }
+    // if (title.trim().length === 0) {
+    //   setError(true);
+    //   return;
+    // }
 
-    const todo: ITodo = {
+    const todo = {
       id: Date.now(),
-      title: title,
-      description: description,
+      title: "",
+      description: "",
       isCompleted: false,
     };
 
-    setTodos([...todos, todo]);
-
-    setTitle("");
-    setDescription("");
+    setTodos({ ...todos, [todo.id]: todo });
   };
 
-  const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id !== id) return todo;
+  useEffect(() => console.log("todos change"), [todos]);
 
-        return {
-          ...todo,
-          isCompleted: !todo.isCompleted,
-        };
-      })
-    );
-  };
+  // const toggleTodo = (id: number) => {
+  //   setTodos(
+  //     todos.map((todo) => {
+  //       if (todo.id !== id) return todo;
+
+  //       return {
+  //         ...todo,
+  //         isCompleted: !todo.isCompleted,
+  //       };
+  //     })
+  //   );
+  // };
 
   return (
     <div className="App">
@@ -71,10 +67,11 @@ const App: React.FC = () => {
               type="text"
               name="title"
               id="title"
-              value={title}
-              onChange={onTitleChange}
+              // value={title}
+              // onChange={onTitleChange}
               ref={titleRef}
               className={error ? `input error` : `input`}
+              required
             />
             {error ? <p className="error-message">This field is empty</p> : ""}
           </div>
@@ -87,9 +84,10 @@ const App: React.FC = () => {
               type="text"
               name="description"
               id="description"
-              value={description}
-              onChange={onDescriptionChange}
+              // value={description}
+              // onChange={onDescriptionChange}
               className="input"
+              required
             />
           </div>
           <button type="submit" className="button">
@@ -98,7 +96,10 @@ const App: React.FC = () => {
         </form>
       </div>
       <div className="todos-wrapper">
-        <TodoList items={todos} toggleTodo={toggleTodo} />
+        <TodoList
+          items={todos}
+          // toggleTodo={toggleTodo}
+        />
       </div>
     </div>
   );

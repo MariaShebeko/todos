@@ -1,12 +1,11 @@
-import { ITodo } from "../../types/data";
+import { ITodo, ITodoList } from "../../types/data";
 import { TodoItem } from "../TodoItem";
 
 interface ITodoListProps {
-  items: ITodo[];
-  toggleTodo: (id: number) => void;
+  items: ITodoList;
 }
 
-export const TodoList: React.FC<ITodoListProps> = ({ items, toggleTodo }) => {
+export const TodoList: React.FC<ITodoListProps> = ({ items }) => {
   return (
     <table>
       <thead>
@@ -18,9 +17,13 @@ export const TodoList: React.FC<ITodoListProps> = ({ items, toggleTodo }) => {
         </tr>
       </thead>
       <tbody>
-        {items.map((todo, i) => {
+        {Object.values(items).map((todo) => {
           return (
-            <TodoItem key={todo.id} i={i} {...todo} toggleTodo={toggleTodo} />
+            <TodoItem
+              key={todo.id}
+              {...todo}
+              // toggleTodo={toggleTodo}
+            />
           );
         })}
       </tbody>
