@@ -58,3 +58,11 @@ font-weight: bold;
   font-size: 12px;
   margin: 0;
 }
+
+.button-wrapper {
+  align-items: center;
+}
+
+.form-wrap{
+  display: flex;
+}

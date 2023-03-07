@@ -1,20 +1,25 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { ITodo } from "../../types/data";
 import { Modal } from "../Modal";
-import { TodoCard } from "../TodoCard";
 import "./TodoItem.css";
 
-export const TodoItem: React.FC<ITodo> = ({
-  id,
-  title,
-  description,
-  isCompleted,
-  // toggleTodo,
-}) => {
+interface TodoItemProps {
+  item: ITodo;
+}
+
+const hasTodoNotModified = (prev: TodoItemProps, next: TodoItemProps) => {
+  return prev.item.isCompleted === next.item.isCompleted;
+};
+
+export const TodoItem: React.FC<TodoItemProps> = memo(({ item }) => {
+  console.log("ITEM RENDER " + item.id);
+
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => {
     setShowModal(!showModal);
   };
+
+  const { id, title, description } = item;
 
   return (
     <>
@@ -23,11 +28,7 @@ export const TodoItem: React.FC<ITodo> = ({
         <td onClick={toggleModal}>{title}</td>
         <td onClick={toggleModal}>{description}</td>
         <td>
-          <input
-            type="checkbox"
-            checked={isCompleted}
-            // onChange={() => toggleTodo(id)}
-          />
+          <input type="checkbox" data-id={id} />
         </td>
       </tr>
       {showModal && (
@@ -37,11 +38,11 @@ export const TodoItem: React.FC<ITodo> = ({
             title={title}
             description={description}
             isCompleted={isCompleted}
-            // toggleTodo={toggleTodo}
             onClose={toggleModal}
           /> */}
+          some stuff with todo
         </Modal>
       )}
     </>
   );
-};
+}, hasTodoNotModified);
