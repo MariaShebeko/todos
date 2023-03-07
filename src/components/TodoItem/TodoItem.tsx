@@ -1,54 +1,48 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { ITodo } from "../../types/data";
 import { Modal } from "../Modal";
-import { TodoCard } from "../TodoCard";
 import "./TodoItem.css";
 
-interface ITodoItem extends ITodo {
-  i: number;
-  toggleTodo: (id: number) => void;
+interface TodoItemProps {
+  item: ITodo;
 }
 
-export const TodoItem: React.FC<ITodoItem> = ({
-  id,
-  title,
-  description,
-  isCompleted,
-  i,
-  toggleTodo,
-}) => {
-  const [showModal, setShowModal] = useState(false);
+const hasTodoNotModified = (prev: TodoItemProps, next: TodoItemProps) => {
+  return prev.item.isCompleted === next.item.isCompleted;
+};
 
+export const TodoItem: React.FC<TodoItemProps> = memo(({ item }) => {
+  console.log("ITEM RENDER " + item.id);
+
+  const [showModal, setShowModal] = useState(false);
   const toggleModal = () => {
     setShowModal(!showModal);
   };
 
+  const { id, title, description } = item;
+
   return (
     <>
       <tr key={id} className="table-row">
-        <td onClick={toggleModal}>{i + 1}.</td>
+        <td onClick={toggleModal}>{id}.</td>
         <td onClick={toggleModal}>{title}</td>
         <td onClick={toggleModal}>{description}</td>
         <td>
-          <input
-            type="checkbox"
-            checked={isCompleted}
-            onChange={() => toggleTodo(id)}
-          />
+          <input type="checkbox" data-id={id} />
         </td>
       </tr>
       {showModal && (
         <Modal onClose={toggleModal}>
-          <TodoCard
+          {/* <TodoCard
             id={id}
             title={title}
             description={description}
             isCompleted={isCompleted}
-            toggleTodo={toggleTodo}
             onClose={toggleModal}
-          />
+          /> */}
+          some stuff with todo
         </Modal>
       )}
     </>
   );
-};
+}, hasTodoNotModified);

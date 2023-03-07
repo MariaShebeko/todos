@@ -11,7 +11,7 @@ export const TodoCard: React.FC<ITodoCard> = ({
   title,
   description,
   isCompleted,
-  toggleTodo,
+  // toggleTodo,
   onClose,
 }) => {
   return (
@@ -24,7 +24,7 @@ export const TodoCard: React.FC<ITodoCard> = ({
         <input
           type="checkbox"
           checked={isCompleted}
-          onChange={() => toggleTodo(id)}
+          // onChange={() => toggleTodo(id)}
         />
       </div>
       <button type="button" onClick={onClose} className={s.button}>

@@ -4,3 +4,7 @@ export interface ITodo {
   description: string;
   isCompleted: boolean;
 }
+
+export interface ITodoList {
+  [key: number]: ITodo;
+}
