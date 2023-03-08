@@ -1,48 +1,35 @@
-import { useState, memo } from "react";
-import { ITodo } from "../../types/data";
-import { Modal } from "../Modal";
+import { memo } from "react";
+import { ITodo } from "types/data";
 import "./TodoItem.css";
 
-interface TodoItemProps {
+interface ITodoItem {
   item: ITodo;
 }
 
-const hasTodoNotModified = (prev: TodoItemProps, next: TodoItemProps) => {
+const hasTodoNotModified = (prev: ITodoItem, next: ITodoItem) => {
   return prev.item.isCompleted === next.item.isCompleted;
 };
 
-export const TodoItem: React.FC<TodoItemProps> = memo(({ item }) => {
+export const TodoItem: React.FC<ITodoItem> = memo(({ item }) => {
   console.log("ITEM RENDER " + item.id);
 
-  const [showModal, setShowModal] = useState(false);
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const { id, title, description } = item;
+  const { id, title, description, isCompleted } = item;
 
   return (
     <>
-      <tr key={id} className="table-row">
-        <td onClick={toggleModal}>{id}.</td>
-        <td onClick={toggleModal}>{title}</td>
-        <td onClick={toggleModal}>{description}</td>
-        <td>
-          <input type="checkbox" data-id={id} />
+      <tr key={id} className="table-row" data-id={id}>
+        <td data-id={id}>{id}.</td>
+        <td data-id={id}>{title}</td>
+        <td data-id={id}>{description}</td>
+        <td data-id={id}>
+          <input
+            type="checkbox"
+            data-id={id}
+            checked={isCompleted}
+            // onChange={() => {}} // I dont know why, we can just have empty function!!!
+          />
         </td>
       </tr>
-      {showModal && (
-        <Modal onClose={toggleModal}>
-          {/* <TodoCard
-            id={id}
-            title={title}
-            description={description}
-            isCompleted={isCompleted}
-            onClose={toggleModal}
-          /> */}
-          some stuff with todo
-        </Modal>
-      )}
     </>
   );
 }, hasTodoNotModified);

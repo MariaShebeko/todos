@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { ITodo } from "../../types/data";
+import { ITodo } from "types/data";
 
 interface IFormProps {
   addTodo: (todo: ITodo) => void;
@@ -20,7 +20,6 @@ export const CreateTodoForm: React.FC<IFormProps> = ({
   cancelButtonActive = false,
   onClose = null,
 }) => {
-  console.log("Form render");
   const [error, setError] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -82,7 +81,6 @@ export const CreateTodoForm: React.FC<IFormProps> = ({
             name="description"
             id="description"
             className="input"
-            required
           />
         </div>
         {cancelButtonActive && (
