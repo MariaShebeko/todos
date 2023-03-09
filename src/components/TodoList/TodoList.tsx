@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { ITodo, ITodoList } from "../../types/data";
+import { ITodo, ITodoList } from "types/data";
 import { CreateTodoForm } from "../CreateTodoForm";
+import { Modal } from "../Modal";
+import { TodoCard } from "../TodoCard";
 import { TodoItem } from "../TodoItem";
-import { AddTodoInModal } from "./AddTodoInModal";
+import { AddTodoInModal } from "./components/AddTodoInModal";
 
 export const TodoList: React.FC = () => {
-  console.log("list render");
+  console.log("LIST render");
   const [todos, setTodos] = useState<ITodoList>({});
+  const [activeTodo, setActiveTodo] = useState<number | null>(null);
 
   const addTodo = (todo: ITodo) => {
     setTodos({ ...todos, [todo.id]: todo });
@@ -17,6 +20,9 @@ export const TodoList: React.FC = () => {
       const todoId = Number(event.target.getAttribute("data-id"));
       todos[todoId] = { ...todos[todoId], isCompleted: event.target.checked };
       setTodos({ ...todos });
+    } else if (event.target instanceof HTMLTableCellElement) {
+      const todoId = Number(event.target.getAttribute("data-id"));
+      setActiveTodo(todoId);
     }
   };
 
@@ -45,6 +51,21 @@ export const TodoList: React.FC = () => {
         </table>
       </div>
       <AddTodoInModal addTodo={addTodo} />
+      {activeTodo && (
+        <Modal
+          onClose={() => {
+            setActiveTodo(null);
+          }}
+        >
+          <TodoCard
+            todo={todos[activeTodo]}
+            onClose={() => {
+              setActiveTodo(null);
+            }}
+            onCheckClick={handleItemClick}
+          />
+        </Modal>
+      )}
     </>
   );
 };
