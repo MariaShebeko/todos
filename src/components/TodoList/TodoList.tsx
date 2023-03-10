@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { ITodo, ITodoList } from "types/data";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import { AppDispatch } from "redux/store";
+import { toggleTodoAction } from "redux/todos/todosSlice";
 import { CreateTodoForm } from "../CreateTodoForm";
 import { Modal } from "../Modal";
 import { TodoCard } from "../TodoCard";
@@ -8,18 +11,17 @@ import { AddTodoInModal } from "./components/AddTodoInModal";
 
 export const TodoList: React.FC = () => {
   console.log("LIST render");
-  const [todos, setTodos] = useState<ITodoList>({});
-  const [activeTodo, setActiveTodo] = useState<number | null>(null);
+  const todos = useSelector((state: RootState) => state.todos);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const addTodo = (todo: ITodo) => {
-    setTodos({ ...todos, [todo.id]: todo });
-  };
+  const [activeTodo, setActiveTodo] = useState<number | null>(null);
 
   const handleItemClick = (event: React.MouseEvent<HTMLElement>) => {
     if (event.target instanceof HTMLInputElement) {
       const todoId = Number(event.target.getAttribute("data-id"));
-      todos[todoId] = { ...todos[todoId], isCompleted: event.target.checked };
-      setTodos({ ...todos });
+      const todo = todos[todoId];
+
+      dispatch(toggleTodoAction(todo));
     } else if (event.target instanceof HTMLTableCellElement) {
       const todoId = Number(event.target.getAttribute("data-id"));
       setActiveTodo(todoId);
@@ -32,7 +34,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      <CreateTodoForm addTodo={addTodo} />
+      <CreateTodoForm />
       <div className="todos-wrapper">
         <table>
           <thead>
@@ -50,7 +52,7 @@ export const TodoList: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <AddTodoInModal addTodo={addTodo} />
+      <AddTodoInModal />
       {activeTodo && (
         <Modal
           onClose={() => {

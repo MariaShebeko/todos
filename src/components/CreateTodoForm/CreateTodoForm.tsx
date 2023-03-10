@@ -1,8 +1,9 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { ITodo } from "types/data";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "redux/store";
+import { addTodoAction } from "redux/todos/todosSlice";
 
 interface IFormProps {
-  addTodo: (todo: ITodo) => void;
   cancelButtonActive?: boolean;
   onClose?: () => void;
 }
@@ -16,10 +17,11 @@ interface CustomForm extends HTMLFormElement {
 }
 
 export const CreateTodoForm: React.FC<IFormProps> = ({
-  addTodo,
   cancelButtonActive = false,
   onClose = null,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [error, setError] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -43,8 +45,7 @@ export const CreateTodoForm: React.FC<IFormProps> = ({
       description: data.description,
       isCompleted: false,
     };
-
-    addTodo(todo);
+    dispatch(addTodoAction(todo));
     event.currentTarget.reset();
   };
 

@@ -26,7 +26,7 @@ export const TodoItem: React.FC<ITodoItem> = memo(({ item }) => {
             type="checkbox"
             data-id={id}
             checked={isCompleted}
-            // onChange={() => {}} // I dont know why, we can just have empty function!!!
+            onChange={() => {}} // I dont know why, we can just have empty function!!!
           />
         </td>
       </tr>
