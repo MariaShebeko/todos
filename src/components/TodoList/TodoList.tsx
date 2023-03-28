@@ -23,6 +23,10 @@ export const TodoList: React.FC = () => {
     } else if (event.target instanceof HTMLTableCellElement) {
       const todoId = Number(event.target.getAttribute("data-id"));
       setActiveTodo(todoId);
+    } else if (event.target instanceof HTMLButtonElement) {
+      const todoId = Number(event.target.getAttribute("data-id"));
+      delete todos[todoId];
+      setTodos({ ...todos });
     }
   };
 

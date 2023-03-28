@@ -29,6 +29,11 @@ export const TodoItem: React.FC<ITodoItem> = memo(({ item }) => {
             // onChange={() => {}} // I dont know why, we can just have empty function!!!
           />
         </td>
+        <td>
+          <button type="button" data-id={id}>
+            delete
+          </button>
+        </td>
       </tr>
     </>
   );
