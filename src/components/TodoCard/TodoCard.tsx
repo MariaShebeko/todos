@@ -12,7 +12,7 @@ export const TodoCard: React.FC<ITodoCard> = ({
   onClose,
   onCheckClick,
 }) => {
-  const { id, title, description, isCompleted } = todo;
+  const { _id, title, description, isCompleted } = todo;
   console.log("TODO: in todo card:", todo);
   return (
     <div className={s.cardWrapper} onClick={onCheckClick}>
@@ -21,7 +21,7 @@ export const TodoCard: React.FC<ITodoCard> = ({
       <p>{description}</p>
       <div className={s.statusWrapper}>
         <span className={s.status}>Status:</span>
-        <input type="checkbox" data-id={id} checked={isCompleted} />
+        <input type="checkbox" data-id={_id} checked={isCompleted} />
       </div>
       <button type="button" onClick={onClose} className={s.button}>
         Close

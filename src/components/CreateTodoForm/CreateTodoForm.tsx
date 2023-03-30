@@ -38,7 +38,6 @@ export const CreateTodoForm: React.FC<IFormProps> = ({
     };
 
     const todo = {
-      id: Date.now(),
       title: data.title,
       description: data.description,
       isCompleted: false,
