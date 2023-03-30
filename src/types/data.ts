@@ -1,10 +1,6 @@
 export interface ITodo {
-  id: number;
+  _id?: string;
   title: string;
   description: string;
   isCompleted: boolean;
-}
-
-export interface ITodoList {
-  [key: number]: ITodo;
 }
